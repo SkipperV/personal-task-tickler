@@ -6,8 +6,7 @@ services:
             args:
                 user: skipperv
                 uid: 1000
-            context: ./
-            dockerfile: Dockerfile
+            dockerfile: config/docker/backend/Dockerfile
         networks:
             - personal_task_tickler_network
         image: personal_task_tickler_app
@@ -28,7 +27,7 @@ services:
         container_name: ${APP_NAME}-webserver
         restart: unless-stopped
         ports:
-            - "8080:80"
+            - "80:80"
         volumes:
             - ./:/var/www
             - ./config/nginx/:/etc/nginx/conf.d/
