@@ -14,8 +14,6 @@ return new class extends Migration
     {
         Schema::create('issue_relations', function (Blueprint $table) {
             $table->id();
-//            $table->foreignIdFor(Issue::class, 'parent_issue_id')->constrained()->cascadeOnDelete();
-//            $table->foreignIdFor(Issue::class, 'child_issue_id')->constrained()->cascadeOnDelete();
             $table->unsignedBigInteger('parent_issue_id');
             $table->unsignedBigInteger('child_issue_id');
             $table->set('type', ['Blocked by', 'Segmented by']);

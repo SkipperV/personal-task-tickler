@@ -16,14 +16,19 @@ class Issue extends Model
         'id_within_space',
         'rank',
         'title',
-        'status',
+        'status_id',
         'deadline_at',
         'done_at',
         'description',
     ];
 
+    protected $hidden = [
+        'status_id'
+    ];
+
     protected $appends = [
-        'code'
+        'code',
+        'status'
     ];
 
     public function getRouteKeyName(): string
@@ -36,9 +41,19 @@ class Issue extends Model
         return $this->belongsTo(Space::class);
     }
 
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(IssueStatus::class);
+    }
+
     public function getCodeAttribute(): string
     {
         return $this->space->code . "-" . $this->id_within_space;
+    }
+
+    public function getStatusAttribute(): string
+    {
+        return $this->status->name;
     }
 
     public function blockedBy(): BelongsToMany|bool

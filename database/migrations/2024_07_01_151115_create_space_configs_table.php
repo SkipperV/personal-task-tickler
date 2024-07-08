@@ -12,16 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('issues', function (Blueprint $table) {
+        Schema::create('space_configs', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Space::class)->constrained()->cascadeOnDelete();
-            $table->unsignedBigInteger('id_within_space');
-            $table->unsignedBigInteger('rank');
-            $table->string('title');
-            $table->string('status');
-            $table->dateTime('deadline_at')->nullable();
-            $table->dateTime('done_at')->nullable();
-            $table->longText('description')->nullable();
+            $table->integer('archive_delay')->default(-1);
+            $table->boolean('put_in_progress_to_the_beginning')->default(false);
+            $table->boolean('put_done_to_the_end')->default(false);
+            $table->boolean('show_issue_segments')->default(false);
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('issues');
+        Schema::dropIfExists('space_configs');
     }
 };
