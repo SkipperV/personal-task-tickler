@@ -16,16 +16,14 @@ return new class extends Migration
         Schema::create('issues', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Space::class)->constrained()->cascadeOnDelete();
-            $table->unsignedBigInteger('status_id');
+            $table->foreignId('status_id')->constrained('issue_statuses')->cascadeOnDelete();
             $table->unsignedBigInteger('id_within_space');
             $table->unsignedBigInteger('rank');
             $table->string('title');
+            $table->longText('description')->nullable();
             $table->dateTime('deadline_at')->nullable();
             $table->dateTime('done_at')->nullable();
-            $table->longText('description')->nullable();
             $table->timestamps();
-
-            $table->foreign('status_id')->references('id')->on('issue_statuses')->cascadeOnDelete();
         });
     }
 
