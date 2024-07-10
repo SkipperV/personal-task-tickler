@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Issue extends Model
+class Task extends Model
 {
     use HasFactory;
 
@@ -43,7 +43,7 @@ class Issue extends Model
 
     public function status(): BelongsTo
     {
-        return $this->belongsTo(IssueStatus::class);
+        return $this->belongsTo(TaskStatus::class);
     }
 
     public function getCodeAttribute(): string
@@ -58,7 +58,7 @@ class Issue extends Model
 
     public function blockedBy(): BelongsToMany|bool
     {
-        return $this->belongsToMany(Issue::class, 'issue_relations', 'child_issue_id', 'parent_issue_id')
+        return $this->belongsToMany(Task::class, 'task_relations', 'child_task_id', 'parent_task_id')
             ->withPivot('relationship_type')
             ->wherePivot('relationship_type', 'Blocked by')
             ?? false;
@@ -66,25 +66,25 @@ class Issue extends Model
 
     public function isBlocking(): BelongsToMany|bool
     {
-        return $this->belongsToMany(Issue::class, 'issue_relations', 'parent_issue_id', 'child_issue_id')
+        return $this->belongsToMany(Task::class, 'task_relations', 'parent_task_id', 'child_task_id')
             ->withPivot('relationship_type')
             ->wherePivot('relationship_type', 'Blocked by')
             ?? false;
     }
 
-    public function segmentedBy(): BelongsToMany|bool
+    public function subtasks(): BelongsToMany|bool
     {
-        return $this->belongsToMany(Issue::class, 'issue_relations', 'child_issue_id', 'parent_issue_id')
+        return $this->belongsToMany(Task::class, 'task_relations', 'child_task_id', 'parent_task_id')
             ->withPivot('relationship_type')
-            ->wherePivot('relationship_type', 'Segmented by')
+            ->wherePivot('relationship_type', 'Subtask')
             ?? false;
     }
 
-    public function segmentOf(): BelongsToMany|bool
+    public function parentTask(): BelongsToMany|bool
     {
-        return $this->belongsToMany(Issue::class, 'issue_relations', 'parent_issue_id', 'child_issue_id')
+        return $this->belongsToMany(Task::class, 'task_relations', 'parent_task_id', 'child_task_id')
             ->withPivot('relationship_type')
-            ->wherePivot('relationship_type', 'Segment of')
+            ->wherePivot('relationship_type', 'Subtask')
             ?? false;
     }
 }

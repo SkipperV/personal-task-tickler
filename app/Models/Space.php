@@ -24,14 +24,21 @@ class Space extends Model
         return 'slug';
     }
 
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->where($field, $value)
+            ->where('user_id', request()->user()->id)
+            ->firstOrFail();
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function issues(): HasMany
+    public function tasks(): HasMany
     {
-        return $this->hasMany(Issue::class);
+        return $this->hasMany(Task::class);
     }
 
     public function configuration(): HasOne

@@ -14,13 +14,13 @@ class SpaceConfig extends Model
         'archive_delay',
         'put_in_progress_to_the_beginning',
         'put_done_to_the_end',
-        'show_issue_segments'
+        'show_subtasks'
     ];
 
     protected $casts = [
         'put_in_progress_to_the_beginning' => 'boolean',
         'put_done_to_the_end' => 'boolean',
-        'show_issue_segments' => 'boolean'
+        'show_subtasks' => 'boolean'
     ];
 
     public function space(): BelongsTo

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class IssueStatus extends Model
+class TaskStatus extends Model
 {
     use HasFactory;
 
@@ -15,9 +15,9 @@ class IssueStatus extends Model
         'name'
     ];
 
-    public function issues(): HasMany
+    public function tasks(): HasMany
     {
-        return $this->hasMany(Issue::class);
+        return $this->hasMany(Task::class);
     }
 
     public function space(): BelongsTo
