@@ -15,9 +15,10 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(Space::class)->constrained()->cascadeOnDelete();
             $table->foreignId('status_id')->constrained('task_statuses')->cascadeOnDelete();
-            $table->unsignedBigInteger('id_within_space');
+            $table->string('code');
             $table->unsignedBigInteger('rank');
             $table->string('title');
+            $table->boolean('is_archived')->default(false);
             $table->longText('description')->nullable();
             $table->dateTime('deadline_at')->nullable();
             $table->dateTime('done_at')->nullable();

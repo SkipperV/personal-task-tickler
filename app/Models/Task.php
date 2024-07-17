@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -13,27 +14,42 @@ class Task extends Model
 
     protected $fillable = [
         'space_id',
-        'id_within_space',
+        'status_id',
+        'code',
         'rank',
         'title',
-        'status_id',
+        'is_archived',
+        'description',
         'deadline_at',
         'done_at',
-        'description',
     ];
 
     protected $hidden = [
-        'status_id'
+        'status_id',
+        'is_archived',
     ];
 
     protected $appends = [
-        'code',
-        'status'
+        'status',
     ];
 
-    public function getRouteKeyName(): string
+    protected $casts = [
+        'is_archived' => 'boolean',
+        'deadline_at' => 'datetime:d-m-Y H:i',
+        'done_at' => 'datetime:d-m-Y H:i:s',
+    ];
+
+    public function resolveRouteBinding($value, $field = null)
     {
-        return 'code';
+        $spaceCode = explode('-', $value)[0];
+
+        try {
+            return $this->whereHas('space', function ($query) use ($spaceCode) {
+                $query->where('user_id', request()->user()->id)->where('code', $spaceCode);
+            })->where('code', $value)->with('space')->first();
+        } catch (ModelNotFoundException $e) {
+            return abort(404, 'Task not found.');
+        }
     }
 
     public function space(): BelongsTo
@@ -43,17 +59,7 @@ class Task extends Model
 
     public function status(): BelongsTo
     {
-        return $this->belongsTo(TaskStatus::class);
-    }
-
-    public function getCodeAttribute(): string
-    {
-        return $this->space->code . "-" . $this->id_within_space;
-    }
-
-    public function getStatusAttribute(): string
-    {
-        return $this->status->name;
+        return $this->belongsTo(TaskStatus::class, 'status_id');
     }
 
     public function blockedBy(): BelongsToMany|bool
@@ -86,5 +92,13 @@ class Task extends Model
             ->withPivot('relationship_type')
             ->wherePivot('relationship_type', 'Subtask')
             ?? false;
+    }
+
+    public function getStatusAttribute(): string
+    {
+        if ($this->relationLoaded('status')) {
+            return $this->status->name;
+        }
+        return $this->status()->first()->name;
     }
 }

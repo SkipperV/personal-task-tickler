@@ -14,11 +14,13 @@ class TaskSeeder extends Seeder
      */
     public function run(): void
     {
+        $spaceCodesForSeeding = ['DS-', 'SPC2-'];
+
         for ($i = 1; $i <= 2; $i++) {
             Task::factory()->create([
                 'space_id' => $i,
                 'status_id' => $i * 3,
-                'id_within_space' => 1,
+                'code' => $spaceCodesForSeeding[$i - 1] . '1',
                 'rank' => 1,
                 'title' => 'First Task',
             ]);
@@ -26,7 +28,7 @@ class TaskSeeder extends Seeder
             Task::factory()->create([
                 'space_id' => $i,
                 'status_id' => $i,
-                'id_within_space' => 2,
+                'code' => $spaceCodesForSeeding[$i - 1] . '2',
                 'rank' => 2,
                 'title' => 'Done task',
                 'done_at' => now(),
@@ -35,7 +37,7 @@ class TaskSeeder extends Seeder
             Task::factory()->create([
                 'space_id' => $i,
                 'status_id' => $i,
-                'id_within_space' => 3,
+                'code' => $spaceCodesForSeeding[$i - 1] . '3',
                 'rank' => 3,
                 'title' => 'Done task 10 days ago',
                 'done_at' => now()->subDays(10),
@@ -44,7 +46,7 @@ class TaskSeeder extends Seeder
             Task::factory()->create([
                 'space_id' => $i,
                 'status_id' => $i * 3,
-                'id_within_space' => 4,
+                'code' => $spaceCodesForSeeding[$i - 1] . '4',
                 'rank' => 4,
                 'title' => 'Blocked task',
             ]);
@@ -52,7 +54,7 @@ class TaskSeeder extends Seeder
             Task::factory()->create([
                 'space_id' => $i,
                 'status_id' => $i * 2,
-                'id_within_space' => 5,
+                'code' => $spaceCodesForSeeding[$i - 1] . '5',
                 'rank' => 5,
                 'title' => 'Blocking task',
             ]);
@@ -60,7 +62,7 @@ class TaskSeeder extends Seeder
             Task::factory()->create([
                 'space_id' => $i,
                 'status_id' => $i * 3,
-                'id_within_space' => 6,
+                'code' => $spaceCodesForSeeding[$i - 1] . '6',
                 'rank' => 6,
                 'title' => 'Task with subtasks',
             ]);
@@ -68,7 +70,7 @@ class TaskSeeder extends Seeder
             Task::factory()->create([
                 'space_id' => $i,
                 'status_id' => $i * 3,
-                'id_within_space' => 7,
+                'code' => $spaceCodesForSeeding[$i - 1] . '7',
                 'rank' => 7,
                 'title' => 'Subtask 1',
             ]);
@@ -76,10 +78,11 @@ class TaskSeeder extends Seeder
             Task::factory()->create([
                 'space_id' => $i,
                 'status_id' => $i * 3,
-                'id_within_space' => 8,
+                'code' => $spaceCodesForSeeding[$i - 1] . '8',
                 'rank' => 8,
                 'title' => 'Subtask 2',
             ]);
+//            $this->command->info($i-1);
         }
         DB::table('task_relations')->insert([
             'parent_task_id' => 4,

@@ -18,7 +18,7 @@ class TaskFactory extends Factory
     {
         return [
             'space_id' => 1,
-            'id_within_space' => 1,
+            'code' => 1,
             'rank' => 0,
             'title' => fake()->sentence(4),
             'status_id' => fake()->randomElement(range(1, 3)),
