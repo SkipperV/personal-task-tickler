@@ -17,7 +17,9 @@ return new class extends Migration {
             $table->integer('archive_delay')->default(-1);
             $table->boolean('put_in_progress_to_the_beginning')->default(false);
             $table->boolean('put_done_to_the_end')->default(false);
-            $table->boolean('show_subtasks')->default(false);
+            $table->boolean('show_subtasks')->default(true);
+            $table->boolean('hide_all_tasks_from_global_search')->default(false);
+            $table->boolean('hide_archived_from_global_search')->default(true);
             $table->timestamps();
         });
     }
