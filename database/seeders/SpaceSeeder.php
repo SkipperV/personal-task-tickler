@@ -16,6 +16,7 @@ class SpaceSeeder extends Seeder
         Space::factory()->create([
             'user_id' => 1,
             'name' => 'Default Space',
+            'position' => 1,
             'code' => 'DS',
             'slug' => 'default-space',
         ]);
@@ -23,6 +24,7 @@ class SpaceSeeder extends Seeder
         Space::factory()->create([
             'user_id' => 1,
             'name' => 'Space',
+            'position' => 2,
             'code' => 'SPC2',
             'slug' => 'space2',
         ]);
@@ -30,6 +32,7 @@ class SpaceSeeder extends Seeder
         Space::factory()->create([
             'user_id' => 1,
             'name' => 'Movies',
+            'position' => 3,
             'code' => 'MVS',
             'slug' => 'movies',
         ]);
@@ -37,6 +40,7 @@ class SpaceSeeder extends Seeder
         Space::factory()->create([
             'user_id' => 2,
             'name' => 'Movies',
+            'position' => 1,
             'code' => 'MVS',
             'slug' => 'movies',
         ]);
@@ -44,6 +48,7 @@ class SpaceSeeder extends Seeder
         Space::factory()->create([
             'user_id' => 2,
             'name' => 'Tasks',
+            'position' => 2,
             'code' => 'TSKS',
             'slug' => 'tasks',
         ]);

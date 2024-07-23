@@ -17,8 +17,9 @@ class Space extends Model
     protected $fillable = [
         'user_id',
         'name',
+        'position',
         'code',
-        'slug'
+        'slug',
     ];
 
     public function resolveRouteBinding($value, $field = null)

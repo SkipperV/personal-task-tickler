@@ -19,6 +19,7 @@ class SpaceFactory extends Factory
         return [
             'user_id' => 1,
             'name' => fake()->company(),
+            'position' => fake()->unique()->randomElement(range(1, 5)),
             'code' => fake()->companySuffix(),
             'slug' => fake()->company(),
         ];
