@@ -27,6 +27,11 @@ class SpaceConfig extends Model
         'hide_archived_from_global_search' => 'boolean'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
     public function space(): BelongsTo
     {
         return $this->belongsTo(Space::class);

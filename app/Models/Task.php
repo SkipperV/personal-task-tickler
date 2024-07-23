@@ -24,11 +24,6 @@ class Task extends Model
         'done_at',
     ];
 
-    protected $hidden = [
-        'status_id',
-        'is_archived',
-    ];
-
     protected $appends = [
         'status',
     ];
@@ -54,7 +49,7 @@ class Task extends Model
 
     public function space(): BelongsTo
     {
-        return $this->belongsTo(Space::class);
+        return $this->belongsTo(Space::class)->without('configuration');
     }
 
     public function status(): BelongsTo

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -22,6 +21,10 @@ class Space extends Model
         'slug',
     ];
 
+    protected $with = [
+        'configuration',
+    ];
+
     public function resolveRouteBinding($value, $field = null)
     {
         try {
@@ -36,6 +39,11 @@ class Space extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function configuration(): HasOne
+    {
+        return $this->hasOne(SpaceConfig::class);
     }
 
     public function allTasks(): HasMany
@@ -53,8 +61,8 @@ class Space extends Model
         return $this->allTasks()->where('is_archived', true);
     }
 
-    public function configuration(): HasOne
+    public function latestTaskCode(): string
     {
-        return $this->hasOne(SpaceConfig::class);
+        return $this->hasOne(Task::class)->latestOfMany('code')->first()->code;
     }
 }
