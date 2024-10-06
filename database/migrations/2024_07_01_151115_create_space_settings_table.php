@@ -11,7 +11,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('space_configs', function (Blueprint $table) {
+        Schema::create('space_settings', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Space::class)->constrained()->cascadeOnDelete();
             $table->integer('archive_delay')->default(-1);
@@ -29,6 +29,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('space_configs');
+        Schema::dropIfExists('space_settings');
     }
 };

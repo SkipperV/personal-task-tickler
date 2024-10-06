@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SpaceConfig>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SpaceSetting>
  */
-class SpaceConfigFactory extends Factory
+class SpaceSettingFactory extends Factory
 {
     /**
      * Define the model's default state.

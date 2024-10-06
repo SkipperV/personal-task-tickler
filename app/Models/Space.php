@@ -22,7 +22,7 @@ class Space extends Model
     ];
 
     protected $with = [
-        'configuration',
+        'settings',
     ];
 
     public function resolveRouteBinding($value, $field = null)
@@ -41,9 +41,9 @@ class Space extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function configuration(): HasOne
+    public function settings(): HasOne
     {
-        return $this->hasOne(SpaceConfig::class);
+        return $this->hasOne(SpaceSetting::class);
     }
 
     public function allTasks(): HasMany

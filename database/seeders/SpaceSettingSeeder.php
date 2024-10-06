@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\SpaceConfig;
+use App\Models\SpaceSetting;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class SpaceConfigSeeder extends Seeder
+class SpaceSettingSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class SpaceConfigSeeder extends Seeder
     public function run(): void
     {
         for ($i = 1; $i <= 5; $i++) {
-            SpaceConfig::factory()->create([
+            SpaceSetting::factory()->create([
                 'space_id' => $i,
             ]);
         }
