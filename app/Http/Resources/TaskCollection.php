@@ -25,6 +25,6 @@ class TaskCollection extends ResourceCollection
                 'description' => $task->description,
                 'deadline_at' => $task->deadline_at,
             ];
-        })->all();
+        })->toArray();
     }
 }
