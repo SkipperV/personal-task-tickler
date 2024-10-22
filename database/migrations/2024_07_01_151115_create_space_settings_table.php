@@ -12,14 +12,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('space_settings', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(Space::class)->constrained()->cascadeOnDelete();
+            $table->foreignId('id')->primary()->constrained('spaces')->cascadeOnDelete();
             $table->integer('archive_delay')->default(-1);
-            $table->boolean('put_in_progress_to_the_beginning')->default(false);
-            $table->boolean('put_done_to_the_end')->default(false);
-            $table->boolean('show_subtasks')->default(true);
-            $table->boolean('hide_all_tasks_from_global_search')->default(false);
-            $table->boolean('hide_archived_from_global_search')->default(true);
+            $table->boolean('show_open_tasks_on_top')->default(false);
+            $table->boolean('show_closed_tasks_on_bottom')->default(false);
+            $table->boolean('collapse_subtasks')->default(true);
+            $table->tinyInteger('hide_from_global_search')->default(1);
             $table->timestamps();
         });
     }

@@ -11,21 +11,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('task_relations', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('parent_task_id');
-            $table->unsignedBigInteger('child_task_id');
             $table->set('type', ['Blocked by', 'Subtask']);
+            $table->foreignId('inward_task_id')->constrained('tasks')->cascadeOnDelete();
+            $table->foreignId('outward_task_id')->constrained('tasks')->cascadeOnDelete();
             $table->timestamps();
 
-            $table->foreign('parent_task_id')
-                ->references('id')
-                ->on('tasks')
-                ->cascadeOnDelete();
-
-            $table->foreign('child_task_id')
-                ->references('id')
-                ->on('tasks')
-                ->cascadeOnDelete();
+            $table->primary(['inward_task_id', 'outward_task_id']);
         });
     }
 
