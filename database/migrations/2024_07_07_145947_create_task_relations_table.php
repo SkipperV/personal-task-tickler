@@ -11,9 +11,9 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('task_relations', function (Blueprint $table) {
-            $table->set('type', ['Blocked by', 'Subtask']);
             $table->foreignId('inward_task_id')->constrained('tasks')->cascadeOnDelete();
             $table->foreignId('outward_task_id')->constrained('tasks')->cascadeOnDelete();
+            $table->foreignId('type_id')->constrained('task_relation_types')->cascadeOnDelete();
             $table->timestamps();
 
             $table->primary(['inward_task_id', 'outward_task_id']);
