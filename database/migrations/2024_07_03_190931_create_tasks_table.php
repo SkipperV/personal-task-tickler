@@ -14,6 +14,7 @@ return new class extends Migration {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Space::class)->constrained()->cascadeOnDelete();
+            $table->foreignId('parent_task_id')->nullable()->constrained('tasks')->nullOnDelete();
             $table->foreignId('status_id')->constrained('task_statuses')->cascadeOnDelete();
             $table->string('code');
             $table->unsignedBigInteger('rank');

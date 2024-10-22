@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(Space::class)->constrained()->cascadeOnDelete();
             $table->string('name');
+            $table->string('type');
             $table->timestamps();
         });
     }
