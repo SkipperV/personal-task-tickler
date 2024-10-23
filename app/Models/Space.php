@@ -8,21 +8,17 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Http\Response;
 
 class Space extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'name',
         'position',
         'code',
         'slug',
-    ];
-
-    protected $with = [
-        'settings',
     ];
 
     public function resolveRouteBinding($value, $field = null)
@@ -32,7 +28,7 @@ class Space extends Model
                 ->where('slug', $value)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            return abort(404, 'Space not found.');
+            return response()->abort(Response::HTTP_NOT_FOUND, 'Space not found.');
         }
     }
 
@@ -43,22 +39,22 @@ class Space extends Model
 
     public function settings(): HasOne
     {
-        return $this->hasOne(SpaceSetting::class);
+        return $this->hasOne(SpaceSetting::class, 'id');
     }
 
-    public function allTasks(): HasMany
+    public function taskStatuses(): HasMany
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(TaskStatus::class);
+    }
+
+    public function taskRelationTypes(): HasMany
+    {
+        return $this->hasMany(TaskRelationType::class);
     }
 
     public function tasks(): HasMany
     {
-        return $this->allTasks()->where('is_archived', false);
-    }
-
-    public function archivedTasks(): HasMany
-    {
-        return $this->allTasks()->where('is_archived', true);
+        return $this->hasMany(Task::class);
     }
 
     public function latestTaskCode(): string

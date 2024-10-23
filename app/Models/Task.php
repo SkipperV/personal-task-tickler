@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Http\Response;
 
 class Task extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'space_id',
-        'status_id',
         'code',
         'rank',
         'title',
@@ -24,26 +24,21 @@ class Task extends Model
         'done_at',
     ];
 
-    protected $appends = [
-        'status',
-    ];
-
     protected $casts = [
         'is_archived' => 'boolean',
         'deadline_at' => 'datetime:d-m-Y H:i',
-        'done_at' => 'datetime:d-m-Y H:i:s',
+        'done_at' => 'datetime:d-m-Y H:i',
     ];
 
     public function resolveRouteBinding($value, $field = null)
     {
         $spaceCode = explode('-', $value)[0];
-
         try {
             return $this->whereHas('space', function ($query) use ($spaceCode) {
                 $query->where('user_id', request()->user()->id)->where('code', $spaceCode);
-            })->where('code', $value)->with('space')->first();
+            })->where('code', $value)->with(['space', 'status'])->first();
         } catch (ModelNotFoundException $e) {
-            return abort(404, 'Task not found.');
+            return response()->json(['message' => 'Task not found.'], Response::HTTP_NOT_FOUND);
         }
     }
 
@@ -57,43 +52,29 @@ class Task extends Model
         return $this->belongsTo(TaskStatus::class, 'status_id');
     }
 
-    public function blockedBy(): BelongsToMany|bool
+    public function inwardRelations(): BelongsToMany
     {
-        return $this->belongsToMany(Task::class, 'task_relations', 'child_task_id', 'parent_task_id')
-            ->withPivot('relationship_type')
-            ->wherePivot('relationship_type', 'Blocked by')
-            ?? false;
+        return $this->belongsToMany(Task::class, 'task_relations', 'inward_task_id', 'outward_task_id')
+            ->as('relations')
+            ->using(TaskRelation::class)
+            ->withPivot('type_id');
     }
 
-    public function isBlocking(): BelongsToMany|bool
+    public function outwardRelations(): BelongsToMany
     {
-        return $this->belongsToMany(Task::class, 'task_relations', 'parent_task_id', 'child_task_id')
-            ->withPivot('relationship_type')
-            ->wherePivot('relationship_type', 'Blocked by')
-            ?? false;
+        return $this->belongsToMany(Task::class, 'task_relations', 'outward_task_id', 'inward_task_id')
+            ->as('relations')
+            ->using(TaskRelation::class)
+            ->withPivot('type_id');
     }
 
-    public function subtasks(): BelongsToMany|bool
+    public function subtasks(): HasMany
     {
-        return $this->belongsToMany(Task::class, 'task_relations', 'child_task_id', 'parent_task_id')
-            ->withPivot('relationship_type')
-            ->wherePivot('relationship_type', 'Subtask')
-            ?? false;
+        return $this->hasMany(Task::class, 'parent_task_id');
     }
 
-    public function parentTask(): BelongsToMany|bool
+    public function parentTask(): BelongsTo
     {
-        return $this->belongsToMany(Task::class, 'task_relations', 'parent_task_id', 'child_task_id')
-            ->withPivot('relationship_type')
-            ->wherePivot('relationship_type', 'Subtask')
-            ?? false;
-    }
-
-    public function getStatusAttribute(): string
-    {
-        if ($this->relationLoaded('status')) {
-            return $this->status->name;
-        }
-        return $this->status()->first()->name;
+        return $this->belongsTo(Task::class, 'parent_task_id');
     }
 }

@@ -14,23 +14,20 @@ class SpaceSetting extends Model
 
     protected $fillable = [
         'archive_delay',
-        'put_in_progress_to_the_beginning',
-        'put_done_to_the_end',
-        'show_subtasks',
-        'hide_all_tasks_from_global_search',
-        'hide_archived_from_global_search'
+        'show_open_tasks_on_top',
+        'show_closed_tasks_on_bottom',
+        'collapse_subtasks',
+        'hide_from_global_search',
     ];
 
     protected $casts = [
-        'put_in_progress_to_the_beginning' => 'boolean',
-        'put_done_to_the_end' => 'boolean',
-        'show_subtasks' => 'boolean',
-        'hide_all_tasks_from_global_search' => 'boolean',
-        'hide_archived_from_global_search' => 'boolean'
+        'show_open_tasks_on_top' => 'boolean',
+        'show_closed_tasks_on_bottom' => 'boolean',
+        'collapse_subtasks' => 'boolean',
     ];
 
     public function space(): BelongsTo
     {
-        return $this->belongsTo(Space::class);
+        return $this->belongsTo(Space::class, 'id');
     }
 }
