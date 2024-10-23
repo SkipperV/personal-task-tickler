@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\TaskStatuses\DefaultTaskStatus;
+use App\Enums\TaskStatuses\TaskStatusType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +20,8 @@ class TaskStatusFactory extends Factory
     {
         return [
             'space_id' => 1,
-            'name' => 'Done'
+            'name' => DefaultTaskStatus::ToDo,
+            'type' => TaskStatusType::Pending,
         ];
     }
 }

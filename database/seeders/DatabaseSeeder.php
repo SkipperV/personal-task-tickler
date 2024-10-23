@@ -16,8 +16,6 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             SpaceSeeder::class,
-            SpaceConfigSeeder::class,
-            TaskStatusSeeder::class,
             TaskSeeder::class,
         ]);
     }

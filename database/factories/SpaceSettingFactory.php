@@ -17,13 +17,12 @@ class SpaceSettingFactory extends Factory
     public function definition(): array
     {
         return [
-            'space_id' => 1,
-            'archive_delay' => 7,
-            'put_in_progress_to_the_beginning' => false,
-            'put_done_to_the_end' => false,
-            'show_subtasks' => false,
-            'hide_all_tasks_from_global_search' => false,
-            'hide_archived_from_global_search' => true,
+            'id' => 1,
+            'archive_delay' => -1,
+            'show_open_tasks_on_top' => false,
+            'show_closed_tasks_on_bottom' => false,
+            'collapse_subtasks' => true,
+            'hide_from_global_search' => 1,
         ];
     }
 }

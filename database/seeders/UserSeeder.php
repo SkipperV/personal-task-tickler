@@ -13,12 +13,9 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'username' => 'Admin',
-        ]);
-
-        User::factory()->create([
-            'username' => 'Test',
-        ]);
+        User::factory()->count(2)->sequence(
+            ['username' => 'Admin'],
+            ['username' => 'Test'],
+        )->create();
     }
 }
