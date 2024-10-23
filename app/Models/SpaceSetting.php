@@ -10,6 +10,8 @@ class SpaceSetting extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'archive_delay',
         'put_in_progress_to_the_beginning',
@@ -25,11 +27,6 @@ class SpaceSetting extends Model
         'show_subtasks' => 'boolean',
         'hide_all_tasks_from_global_search' => 'boolean',
         'hide_archived_from_global_search' => 'boolean'
-    ];
-
-    protected $hidden = [
-        'created_at',
-        'updated_at'
     ];
 
     public function space(): BelongsTo

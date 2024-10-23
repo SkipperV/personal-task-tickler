@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->boolean('show_closed_tasks_on_bottom')->default(false);
             $table->boolean('collapse_subtasks')->default(true);
             $table->tinyInteger('hide_from_global_search')->default(1);
-            $table->timestamps();
         });
     }
 
