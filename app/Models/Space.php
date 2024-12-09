@@ -28,7 +28,7 @@ class Space extends Model
                 ->where('slug', $value)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
-            return response()->abort(Response::HTTP_NOT_FOUND, 'Space not found.');
+            return response()->abort(Response::HTTP_NOT_FOUND, 'Resource not found');
         }
     }
 
@@ -57,6 +57,7 @@ class Space extends Model
         return $this->hasMany(Task::class);
     }
 
+    //Will be reviewed
     public function latestTaskCode(): string
     {
         return $this->hasOne(Task::class)->latestOfMany('code')->first()->code;
