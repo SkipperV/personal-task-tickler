@@ -12,6 +12,7 @@ use App\Models\SpaceSetting;
 use App\Models\TaskRelationType;
 use App\Models\TaskStatus;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class SpaceSeeder extends Seeder
 {
@@ -105,5 +106,12 @@ class SpaceSeeder extends Seeder
                 ],
             )->create();
         }
+
+        //Currently being tested
+        DB::table('task_status_transitions')->insert([
+            'space_id' => 1,
+            'from_status_id' => 2,
+            'to_status_id' => 3,
+        ]);
     }
 }
