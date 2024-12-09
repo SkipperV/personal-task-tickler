@@ -15,19 +15,30 @@ class TaskResource extends JsonResource
     public function toArray(Request $request): array
     {
         $space = $this->space;
+        $status = $this->status;
 
         return [
             'id' => $this->id,
-            'status' => $this->status,
+            'space' => new SpaceResource($space),
+            'status' => [
+                'id' => $status->id,
+                'name' => $status->name,
+                'type' => $status->type,
+            ],
             'code' => $this->code,
             'title' => $this->title,
             'is_archived' => $this->is_archived,
             'description' => $this->description,
             'deadline_at' => $this->deadline_at,
-            'space' => [
-                $space->name,
-                $space->slug
-            ],
+            'subtasks' => $this->when($this->total_subtasks_count > 0,
+                [
+                    'total_subtasks_count' => $this->total_subtasks_count,
+                    'closed_subtasks_count' => $this->closed_subtasks_count,
+                    'data' => new TaskCollection($this->subtasks),
+                ]),
+            'relations' => $this->groupedRelations()->map(function ($relation) {
+                return new TaskCollection($relation);
+            }),
         ];
     }
 }
